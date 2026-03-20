@@ -1,0 +1,32 @@
+# OS & Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Uploaded user files (keep folder structure, exclude content)
+uploads/*
+!uploads/.gitkeep
+
+# PHP config with real credentials (use db.example.php instead)
+# config/db.php
+
+# Logs
+*.log
+error_log
+
+# Composer
+vendor/
+composer.lock
+
+# Node (if any)
+node_modules/
+
+# DOCX reports / generated files
+*.docx
+
+# Temporary files
+*.tmp
+*.bak

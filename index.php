@@ -1,0 +1,369 @@
+<?php
+require_once 'config/db.php';
+$db = getDB();
+// Fetch latest 6 active courses for the homepage
+$courses = $db->query("SELECT c.*, u.name as instructor_name FROM courses c LEFT JOIN users u ON c.instructor_id = u.id WHERE c.status = 'active' ORDER BY c.created_at DESC LIMIT 6")->fetchAll();
+
+// Get at least one hero course if exists
+$heroCourse = !empty($courses) ? $courses[0] : null;
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EduManage - Empower Your Learning Journey</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {"primary":"#1e3b8a","background-light":"#f6f6f8", "background-dark": "#121620"},
+        fontFamily: {"display":["Inter","sans-serif"]},
+        borderRadius: {"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family:'Inter',sans-serif; }
+  .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+  .hero-gradient { background: linear-gradient(135deg, #1e3b8a 0%, #2d52b8 50%, #4a6de5 100%); }
+  .card-hover { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  .card-hover:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(30,59,138,0.15); }
+  @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  .fade-in { animation: fadeInUp 0.6s ease forwards; }
+  .fade-in-2 { animation: fadeInUp 0.6s ease 0.15s forwards; opacity: 0; }
+  .fade-in-3 { animation: fadeInUp 0.6s ease 0.3s forwards; opacity: 0; }
+  
+  /* Premium Header Blur Effect (Glassmorphism) */
+  .header-blur {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(30, 59, 138, 0.1);
+  }
+  .dark .header-blur {
+    background: rgba(15, 23, 42, 0.85) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(71, 85, 105, 0.2);
+  }
+  
+  /* Premium Gradient Background */
+  .premium-bg {
+    background: linear-gradient(180deg, rgba(30, 59, 138, 0.02) 0%, transparent 100%);
+  }
+  .dark .premium-bg {
+    background: linear-gradient(180deg, rgba(30, 59, 138, 0.08) 0%, transparent 100%);
+  }
+  
+  /* Premium Card Effects */
+  .premium-card {
+    background: linear-gradient(145deg, rgba(255,255,255,0.9), rgba(255,255,255,0.95));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(30, 59, 138, 0.08);
+  }
+  .dark .premium-card {
+    background: linear-gradient(145deg, rgba(15,23,42,0.9), rgba(15,23,42,0.95));
+    border: 1px solid rgba(71, 85, 105, 0.2);
+  }
+  
+  /* Shimmer Effect */
+  @keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+  }
+  .shimmer {
+    background: linear-gradient(90deg, transparent, rgba(30, 59, 138, 0.1), transparent);
+    background-size: 1000px 100%;
+    animation: shimmer 3s infinite;
+  }
+  
+  /* Premium Glow */
+  .glow-effect {
+    box-shadow: 0 0 30px rgba(30, 59, 138, 0.15), 0 10px 40px rgba(30, 59, 138, 0.1);
+  }
+  .glow-effect:hover {
+    box-shadow: 0 0 40px rgba(30, 59, 138, 0.25), 0 15px 50px rgba(30, 59, 138, 0.15);
+  }
+  
+  /* Prevent flash of unstyled content for dark mode */
+  .dark body { background-color: #121620; color: #f1f5f9; }
+</style>
+<script>
+  if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+  }
+  function toggleTheme() {
+    if (document.documentElement.classList.contains('dark')) {
+      document.documentElement.classList.remove('dark');
+      localStorage.theme = 'light';
+    } else {
+      document.documentElement.classList.add('dark');
+      localStorage.theme = 'dark';
+    }
+  }
+</script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 premium-bg">
+
+<!-- Navigation - Premium Blur Header -->
+<header class="header-blur flex items-center justify-between whitespace-nowrap px-6 lg:px-20 py-4 sticky top-0 z-50 shadow-lg">
+  <a href="/CMS/index.php" class="flex items-center hover:opacity-80 transition-all hover:scale-105 cursor-pointer">
+    <img src="/CMS/assets/images/logo.png" alt="EduStream Logo" class="h-14 w-auto object-contain drop-shadow-lg">
+  </a>
+  <div class="flex flex-1 justify-end gap-8 items-center">
+    <nav class="hidden md:flex items-center gap-8">
+      <a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Home</a>
+      <a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="courses.php">Courses</a>
+      <a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="/CMS/about.php">About</a>
+      <a class="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="auth/login.php">Login</a>
+    </nav>
+    <div class="flex items-center gap-4">
+      <button onclick="toggleTheme()" title="Toggle Dark Mode" class="flex items-center justify-center">
+        <span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-primary transition-colors">light_mode</span>
+      </button>
+      <a href="auth/login.php?tab=register" class="flex min-w-[110px] cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold transition-all hover:bg-primary/90 shadow-md hover:shadow-xl hover:shadow-primary/40 hover:scale-105 glow-effect">
+        Get Started
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Hero Section -->
+<main>
+  <div class="px-6 lg:px-20 py-16 lg:py-24 max-w-[1280px] mx-auto">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div class="flex flex-col gap-8 fade-in">
+        <div class="inline-flex items-center gap-2 bg-primary/10 dark:bg-primary/20 text-primary dark:text-blue-400 px-4 py-1.5 rounded-full text-sm font-semibold w-fit shimmer border border-primary/20">
+          <span class="material-symbols-outlined text-sm animate-pulse">auto_awesome</span>
+          Premium Course Management
+        </div>
+        <div class="flex flex-col gap-4">
+          <h1 class="text-slate-900 dark:text-white text-4xl lg:text-6xl font-black leading-tight tracking-tight">
+            Empower Your <span class="text-primary">Learning</span> Journey
+          </h1>
+          <p class="text-slate-600 dark:text-slate-400 text-lg lg:text-xl font-normal leading-relaxed">
+            Centralize your academic management and streamline your educational experience with our comprehensive course system. Designed for students, instructors, and administrators.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-4">
+          <a href="auth/login.php?tab=register" class="flex min-w-[140px] cursor-pointer items-center justify-center rounded-lg h-12 px-6 bg-primary text-white text-base font-bold transition-all hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-1 hover:scale-105 glow-effect">
+            <span class="material-symbols-outlined mr-2 text-[18px]">rocket_launch</span> Get Started
+          </a>
+          <a href="auth/login.php" class="flex min-w-[140px] cursor-pointer items-center justify-center rounded-lg h-12 px-6 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-base font-bold transition-all hover:shadow-xl hover:-translate-y-1 premium-card border">
+            <span class="material-symbols-outlined mr-2 text-[18px]">login</span> Sign In
+          </a>
+        </div>
+        <!-- Stats -->
+        <div class="flex gap-8 pt-2">
+          <div>
+            <p class="text-2xl font-black text-primary">500+</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Students</p>
+          </div>
+          <div class="border-l border-slate-200 dark:border-slate-800 pl-8">
+            <p class="text-2xl font-black text-primary">50+</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Courses</p>
+          </div>
+          <div class="border-l border-slate-200 dark:border-slate-800 pl-8">
+            <p class="text-2xl font-black text-primary">15+</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Instructors</p>
+          </div>
+        </div>
+      </div>
+      <div class="w-full aspect-video lg:aspect-square bg-gradient-to-tr from-primary to-blue-400 rounded-3xl overflow-hidden shadow-2xl relative fade-in-2">
+        <?php if ($heroCourse && !empty($heroCourse['image'])): ?>
+        <img src="/CMS/<?= htmlspecialchars($heroCourse['image']) ?>" alt="<?= htmlspecialchars($heroCourse['title']) ?>" class="w-full h-full object-cover mix-blend-overlay opacity-60">
+        <?php endif; ?>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="text-white text-center px-6">
+            <span class="material-symbols-outlined text-[80px] lg:text-[100px] opacity-30">school</span>
+            <h2 class="text-white text-2xl lg:text-3xl font-black mt-4 leading-tight">
+              <?= $heroCourse ? htmlspecialchars($heroCourse['title']) : 'Learning Platform' ?>
+            </h2>
+            <p class="text-white/70 text-base mt-2 max-w-xs mx-auto">
+              <?= $heroCourse ? htmlspecialchars(substr($heroCourse['description'], 0, 80)) : 'Advanced educational tools for everyone.' ?>...
+            </p>
+          </div>
+        </div>
+        <!-- Floating cards -->
+        <div class="absolute top-6 right-6 bg-white/95 backdrop-blur-sm rounded-xl p-3 shadow-lg flex items-center gap-3">
+          <div class="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+            <span class="material-symbols-outlined text-emerald-600 text-sm">check_circle</span>
+          </div>
+          <div>
+            <p class="text-xs font-bold text-slate-900">Course Enrolled!</p>
+            <p class="text-[10px] text-slate-500"><?= $heroCourse ? htmlspecialchars($heroCourse['title']) : 'PHP Development' ?></p>
+          </div>
+        </div>
+        <div class="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm rounded-xl p-3 shadow-lg">
+          <p class="text-xs font-bold text-slate-900 mb-1">Your Progress</p>
+          <div class="w-32 bg-slate-200 h-2 rounded-full overflow-hidden">
+            <div class="bg-primary h-full rounded-full" style="width:65%"></div>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-1">65% Complete</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <?php if (!empty($courses)): ?>
+  <!-- Featured Courses -->
+  <section class="px-6 lg:px-20 py-24 bg-slate-50 dark:bg-slate-800/20">
+    <div class="max-w-[1280px] mx-auto">
+      <div class="flex items-end justify-between mb-12">
+        <div>
+          <h2 class="text-slate-900 dark:text-white text-3xl font-black tracking-tight">Featured Courses</h2>
+          <p class="text-slate-500 mt-2">Start your learning journey with our top picks.</p>
+        </div>
+        <a href="courses.php" class="text-primary font-bold hover:underline mb-1">View All Courses →</a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <?php foreach ($courses as $c): ?>
+        <div class="premium-card rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all group card-hover glow-effect">
+          <div class="h-48 bg-slate-100 dark:bg-slate-800 overflow-hidden relative">
+            <?php if (!empty($c['image'])): ?>
+            <img src="/CMS/<?= htmlspecialchars($c['image']) ?>" alt="<?= htmlspecialchars($c['title']) ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <?php else: ?>
+            <div class="w-full h-full flex items-center justify-center">
+              <span class="material-symbols-outlined text-6xl text-primary/20">menu_book</span>
+            </div>
+            <?php endif; ?>
+            <div class="absolute top-4 right-4 bg-white/95 dark:bg-slate-900/95 px-2 py-1 rounded-lg text-[10px] font-black text-primary uppercase shadow-sm tracking-widest"><?= htmlspecialchars($c['academic_year']) ?></div>
+          </div>
+          <div class="p-6">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest"><?= htmlspecialchars($c['category'] ?? 'General') ?></span>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 leading-tight"><?= htmlspecialchars($c['title']) ?></h3>
+            <p class="text-slate-500 text-sm line-clamp-2 mb-6"><?= htmlspecialchars($c['description']) ?></p>
+            <div class="flex items-center justify-between border-t border-slate-50 dark:border-slate-800 pt-5">
+              <div class="flex items-center gap-2">
+                <div class="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black text-xs">
+                  <?= strtoupper(substr($c['instructor_name'] ?? 'A', 0, 1)) ?>
+                </div>
+                <span class="text-xs font-bold text-slate-600 dark:text-slate-400"><?= htmlspecialchars($c['instructor_name'] ?? 'Expert') ?></span>
+              </div>
+              <a href="auth/login.php" class="text-primary font-black text-xs uppercase tracking-widest hover:underline">Enroll Now +</a>
+            </div>
+          </div>
+        </div>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  </section>
+  <?php endif; ?>
+
+  <!-- Features Section -->
+  <section class="bg-white dark:bg-slate-900/50 py-20 px-6 lg:px-20 border-y border-slate-100 dark:border-slate-800">
+    <div class="max-w-[1280px] mx-auto">
+      <div class="flex flex-col gap-4 mb-12 text-center">
+        <h2 class="text-slate-900 dark:text-white text-3xl lg:text-4xl font-bold tracking-tight">Why Choose EduManage?</h2>
+        <p class="text-slate-600 dark:text-slate-400 text-lg max-w-[720px] mx-auto">Everything you need to succeed in your educational goals with our integrated platform tools.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="flex flex-col gap-4 p-8 rounded-xl premium-card card-hover group fade-in shadow-lg glow-effect">
+          <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white group-hover:scale-110 transition-all">
+            <span class="material-symbols-outlined">menu_book</span>
+          </div>
+          <div class="flex flex-col gap-2">
+            <h3 class="text-slate-900 dark:text-white text-xl font-bold">Course Management</h3>
+            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Organize and track your courses with ease. Access syllabus, grades, and materials in one central dashboard.</p>
+          </div>
+        </div>
+        <div class="flex flex-col gap-4 p-8 rounded-xl premium-card card-hover group fade-in-2 shadow-lg glow-effect">
+          <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white group-hover:scale-110 transition-all">
+            <span class="material-symbols-outlined">how_to_reg</span>
+          </div>
+          <div class="flex flex-col gap-2">
+            <h3 class="text-slate-900 dark:text-white text-xl font-bold">Easy Enrollment</h3>
+            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Simple registration process for all students. Browse, discover, and join new classes in seconds.</p>
+          </div>
+        </div>
+        <div class="flex flex-col gap-4 p-8 rounded-xl premium-card card-hover group fade-in-3 shadow-lg glow-effect">
+          <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white group-hover:scale-110 transition-all">
+            <span class="material-symbols-outlined">verified_user</span>
+          </div>
+          <div class="flex flex-col gap-2">
+            <h3 class="text-slate-900 dark:text-white text-xl font-bold">Role-Based Access</h3>
+            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">Tailored experiences for admins, instructors, and students with secure role-based access control.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Roles Section -->
+  <section class="py-20 px-6 lg:px-20 max-w-[1280px] mx-auto">
+    <div class="text-center mb-12">
+      <h2 class="text-slate-900 dark:text-white text-3xl font-bold tracking-tight">For Everyone in Education</h2>
+      <p class="text-slate-600 dark:text-slate-400 text-lg mt-2">Three distinct roles, one unified platform</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="premium-card rounded-xl p-6 shadow-lg card-hover text-center glow-effect">
+        <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-all">
+          <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-3xl">manage_accounts</span>
+        </div>
+        <h3 class="font-bold text-lg mb-2">Administrator</h3>
+        <p class="text-slate-500 dark:text-slate-400 text-sm">Manage users, courses, enrollments, and monitor the entire platform from a single dashboard.</p>
+      </div>
+      <div class="bg-primary rounded-xl p-6 shadow-xl card-hover text-center text-white glow-effect hover:scale-105 transition-all">
+        <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+          <span class="material-symbols-outlined text-white text-3xl">person_book</span>
+        </div>
+        <h3 class="font-bold text-lg mb-2">Instructor</h3>
+        <p class="text-white/80 text-sm">Create and manage your courses, view enrolled students, and update course materials easily.</p>
+      </div>
+      <div class="premium-card rounded-xl p-6 shadow-lg card-hover text-center glow-effect">
+        <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-all">
+          <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-3xl">school</span>
+        </div>
+        <h3 class="font-bold text-lg mb-2">Student</h3>
+        <p class="text-slate-500 dark:text-slate-400 text-sm">Browse the course catalog, enroll in courses, and track your learning progress with ease.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-black border-t border-slate-900 px-6 lg:px-20 py-12 text-white">
+  <div class="max-w-[1280px] mx-auto grid md:grid-cols-4 gap-12">
+    <div class="flex flex-col gap-4 col-span-1 md:col-span-2">
+      <div class="flex items-center gap-3 text-white">
+        <div class="size-7 bg-white rounded flex items-center justify-center text-black">
+          <span class="material-symbols-outlined text-sm">school</span>
+        </div>
+        <h2 class="text-white text-lg font-bold">EduManage</h2>
+      </div>
+      <p class="text-slate-400 text-sm max-w-xs">The future of academic management. Empowering educators and students worldwide with cutting-edge technology.</p>
+    </div>
+    <div class="flex flex-col gap-4">
+      <h4 class="text-white font-bold text-sm">Quick Links</h4>
+      <nav class="flex flex-col gap-2">
+        <a class="text-slate-400 text-sm hover:text-white transition-colors" href="#">Courses</a>
+        <a class="text-slate-400 text-sm hover:text-white transition-colors" href="auth/login.php">Login</a>
+        <a class="text-slate-400 text-sm hover:text-white transition-colors" href="auth/login.php?tab=register">Register</a>
+      </nav>
+    </div>
+    <div class="flex flex-col gap-4">
+      <h4 class="text-white font-bold text-sm">Support</h4>
+      <nav class="flex flex-col gap-2">
+        <a class="text-slate-400 text-sm hover:text-white transition-colors" href="/CMS/help_center.php">Help Center</a>
+        <a class="text-slate-400 text-sm hover:text-white transition-colors" href="/CMS/privacy.php">Privacy Policy</a>
+        <a class="text-slate-400 text-sm hover:text-white transition-colors" href="/CMS/contact.php">Contact Us</a>
+      </nav>
+    </div>
+  </div>
+  <div class="max-w-[1280px] mx-auto mt-10 pt-8 border-t border-slate-800 text-center">
+    <p class="text-slate-500 text-xs">© <?= date('Y') ?> EduManage Course Management System. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
