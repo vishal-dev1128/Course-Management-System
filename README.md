@@ -106,6 +106,8 @@
 
 ## 🔒 Security Architecture
 
+- **Security Policy**: Detailed vulnerability reporting guidelines are available in [SECURITY.md](SECURITY.md).
+- **Hardened Headers**: Implemented `X-Frame-Options`, `X-Content-Type-Options`, and `Referrer-Policy` to prevent clickjacking and MIME-sniffing.
 - **Credential Hashing**: Uses PHP `password_hash()` for state-of-the-art security.
 - **SQL Injection Prevention**: Forced PDO prepared statements across all database interactions.
 - **XSS Protection**: All user-generated content is sanitized via `htmlspecialchars()` and custom logic.
