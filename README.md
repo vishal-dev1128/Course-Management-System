@@ -122,4 +122,14 @@ For full product requirements and technical specifications, refer to [PRD.md](PR
 
 ---
 
+## 📄 License
+
+**Copyright © 2026 Vishal Pawar. All Rights Reserved.**
+
+This project is intended for personal review and portfolio evaluation. For any other use, modification, or redistribution, explicit permission must be obtained from the author. 
+
+See [LICENSE](LICENSE) for full details.
+
+---
+
 © 2026 EduStream. Built with passion for modern education.
