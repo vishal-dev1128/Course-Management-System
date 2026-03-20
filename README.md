@@ -134,4 +134,13 @@ See [LICENSE](LICENSE) for full details.
 
 ---
 
+## 🤝 Community & Contribution
+
+We welcome contributions to **EduManage**! To maintain a healthy and productive community, please refer to our community guidelines:
+
+- **[Contributing Guidelines](CONTRIBUTING.md)** — How to get started with contributions.
+- **[Code of Conduct](CODE_OF_CONDUCT.md)** — Our standards for a welcoming environment.
+
+---
+
 © 2026 EduStream. Built with passion for modern education.
