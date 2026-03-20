@@ -118,7 +118,9 @@
 
 ## 📄 Documentation
 
-For full product requirements and technical specifications, refer to [PRD.md](PRD.md).
+For full product requirements and technical specifications, refer to:
+- [PRD.md](PRD.md) — Product Requirements Document
+- [Project Wiki](docs/wiki/Home.md) — Full System Documentation
 
 ---
 
