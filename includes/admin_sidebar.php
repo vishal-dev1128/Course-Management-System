@@ -48,56 +48,85 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
 <div class="flex min-h-screen">
 <!-- Sidebar -->
-<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col sticky top-0 h-screen shrink-0 z-30">
-  <a href="/CMS/admin/dashboard.php" class="p-6 flex items-center hover:opacity-80 transition-opacity cursor-pointer">
-    <img src="/CMS/assets/images/logo.png" alt="Logo" class="h-14 w-auto object-contain">
-  </a>
-  <nav class="flex-1 px-4 py-4 space-y-1">
+<!-- Custom Modern Sidebar -->
+<aside class="w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col sticky top-0 h-screen shrink-0 z-40 transition-all shadow-xl shadow-slate-200/50 dark:shadow-none">
+  <!-- Brand Header -->
+  <div class="p-8 pb-6 flex items-center justify-between">
+    <a href="/CMS/admin/dashboard.php" class="flex items-center gap-3 group transition-transform active:scale-95">
+      <div class="size-10 rounded-xl bg-gradient-to-tr from-primary to-blue-600 flex items-center justify-center shadow-lg shadow-primary/30 group-hover:rotate-12 transition-transform">
+        <span class="material-symbols-outlined text-white text-2xl">school</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-xl font-black tracking-tight text-slate-800 dark:text-white leading-none">EduManage</span>
+        <span class="text-[10px] font-bold text-primary uppercase tracking-widest mt-1">Admin Panel</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- Navigation Scroll Area -->
+  <nav class="flex-1 px-4 py-6 overflow-y-auto space-y-2 custom-scrollbar">
+    <div class="px-4 mb-3">
+      <p class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Core Management</p>
+    </div>
+
     <?php
     $navItems = [
-      ['href'=>'/CMS/admin/dashboard.php',   'icon'=>'dashboard',          'label'=>'Dashboard'],
-      ['href'=>'/CMS/admin/courses.php',      'icon'=>'book_2',             'label'=>'Manage Courses'],
-      ['href'=>'/CMS/admin/users.php',        'icon'=>'group',              'label'=>'Manage Users'],
-      ['href'=>'/CMS/admin/enrollments.php',  'icon'=>'person_add',         'label'=>'Enrollments'],
+      ['href'=>'/CMS/admin/dashboard.php',   'icon'=>'grid_view',          'label'=>'Overview'],
+      ['href'=>'/CMS/admin/courses.php',      'icon'=>'auto_stories',       'label'=>'Manage Courses'],
+      ['href'=>'/CMS/admin/users.php',        'icon'=>'group',              'label'=>'User Directory'],
+      ['href'=>'/CMS/admin/enrollments.php',  'icon'=>'app_registration',   'label'=>'Enrollments'],
     ];
+
     foreach ($navItems as $item):
       $isActive = (basename($item['href']) === $currentPage);
-      $cls = $isActive
-        ? 'flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary font-medium'
-        : 'flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors';
     ?>
-    <a class="<?= $cls ?>" href="<?= $item['href'] ?>">
-      <span class="material-symbols-outlined"><?= $item['icon'] ?></span>
-      <span><?= $item['label'] ?></span>
+    <a href="<?= $item['href'] ?>" 
+       class="group flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300 <?= $isActive 
+         ? 'bg-primary text-white shadow-lg shadow-primary/25 font-bold' 
+         : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-primary' ?>">
+      <div class="size-8 rounded-lg <?= $isActive ? 'bg-white/20' : 'bg-slate-100 dark:bg-slate-800 group-hover:bg-primary/10 group-hover:text-primary' ?> flex items-center justify-center transition-colors">
+        <span class="material-symbols-outlined text-[20px]"><?= $item['icon'] ?></span>
+      </div>
+      <span class="text-sm tracking-tight"><?= $item['label'] ?></span>
+      <?php if ($isActive): ?>
+        <div class="ml-auto size-1.5 rounded-full bg-white animate-pulse"></div>
+      <?php endif; ?>
     </a>
     <?php endforeach; ?>
-    <div class="pt-4 pb-2 px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Settings</div>
-    <?php
-    $settingsItems = [
-      ['href'=>'/CMS/admin/system_logs.php','icon'=>'analytics','label'=>'System Logs'],
-    ];
-    foreach ($settingsItems as $item):
-    ?>
-    <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="<?= $item['href'] ?>">
-      <span class="material-symbols-outlined"><?= $item['icon'] ?></span>
-      <span><?= $item['label'] ?></span>
+
+    <div class="px-4 mt-8 mb-3">
+      <p class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">System</p>
+    </div>
+
+    <a href="/CMS/admin/system_logs.php" 
+       class="group flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300 <?= (basename($_SERVER['PHP_SELF']) == 'system_logs.php')
+         ? 'bg-primary text-white shadow-lg shadow-primary/25 font-bold' 
+         : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-primary' ?>">
+      <div class="size-8 rounded-lg flex items-center justify-center transition-colors bg-slate-100 dark:bg-slate-800 group-hover:bg-primary/10 group-hover:text-primary">
+        <span class="material-symbols-outlined text-[20px]">terminal</span>
+      </div>
+      <span class="text-sm tracking-tight">System Logs</span>
     </a>
-    <?php endforeach; ?>
   </nav>
-  <div class="p-4 border-t border-slate-200 dark:border-slate-800">
-    <div class="flex items-center gap-3 p-2">
-      <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-sm">
+
+  <!-- User Profile & Theme -->
+  <div class="p-4 mx-4 mb-6 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+    <div class="flex items-center gap-3">
+      <div class="size-10 rounded-xl bg-gradient-to-br from-primary/20 to-blue-500/20 flex items-center justify-center text-primary font-black text-xs border border-primary/20">
         <?= strtoupper(substr($_SESSION['user_name'] ?? 'A', 0, 2)) ?>
       </div>
       <div class="flex-1 min-w-0">
-        <p class="text-sm font-semibold truncate"><?= htmlspecialchars($_SESSION['user_name'] ?? 'Admin') ?></p>
-        <p class="text-xs text-slate-500 truncate">Super Admin</p>
+        <p class="text-sm font-bold text-slate-800 dark:text-white truncate"><?= htmlspecialchars($_SESSION['user_name'] ?? 'Admin') ?></p>
+        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Administrator</p>
       </div>
-      <button onclick="toggleTheme()" title="Toggle Dark Mode" class="flex items-center justify-center mr-2">
-        <span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-primary transition-colors">light_mode</span>
+    </div>
+    <div class="flex items-center gap-2 mt-4 pt-4 border-t border-slate-200/50 dark:border-slate-700/50">
+      <button onclick="toggleTheme()" class="flex-1 flex items-center justify-center gap-2 p-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-primary transition-colors text-slate-500 dark:text-slate-400 hover:text-primary">
+        <span class="material-symbols-outlined text-[18px]">dark_mode</span>
+        <span class="text-[10px] font-bold uppercase tracking-wider">Theme</span>
       </button>
-      <a href="/CMS/auth/logout.php" title="Logout" class="flex items-center justify-center">
-        <span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-red-500 transition-colors">logout</span>
+      <a href="/CMS/auth/logout.php" class="size-9 flex items-center justify-center rounded-xl bg-rose-50 dark:bg-rose-900/20 text-rose-500 hover:bg-rose-500 hover:text-white transition-all">
+        <span class="material-symbols-outlined text-[18px]">logout</span>
       </a>
     </div>
   </div>
