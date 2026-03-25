@@ -20,18 +20,18 @@
 ## 🌟 Visual Preview
 
 ### 🖥️ Modern Experience
-![Homepage](docs/screenshorts/home.png)
+![Homepage](docs/screenshots/home.png)
 *Beautiful, high-conversion landing page with dynamic course listings.*
 
 ### 🎭 Multi-Role Dashboards
 | Student Dashboard | Instructor Dashboard | Admin Dashboard |
 | :---: | :---: | :---: |
-| ![Student](docs/screenshorts/user%20dashboard.png) | ![Instructor](docs/screenshorts/instructor%20dashboard.png) | ![Admin](docs/screenshorts/admin%20dashboard.png) |
+| ![Student](docs/screenshots/user%20dashboard.png) | ![Instructor](docs/screenshots/instructor%20dashboard.png) | ![Admin](docs/screenshots/admin%20dashboard.png) |
 
 ### 🛠️ Core Management Tools
 | Manage Courses | Manage Users | Enrollments |
 | :---: | :---: | :---: |
-| ![Courses](docs/screenshorts/admin%20manage%20courses.png) | ![Users](docs/screenshorts/admin%20manage%20users.png) | ![Enroll](docs/screenshorts/admin%20enrollment.png) |
+| ![Courses](docs/screenshots/admin%20manage%20courses.png) | ![Users](docs/screenshots/admin%20manage%20users.png) | ![Enroll](docs/screenshots/admin%20enrollment.png) |
 
 ### 🎓 Student Learning Experience
 | Course Completion & Certification |
