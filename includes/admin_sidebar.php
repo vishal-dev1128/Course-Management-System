@@ -27,6 +27,10 @@ $currentPage = basename($_SERVER['PHP_SELF']);
   
   /* Prevent flash of unstyled content for dark mode */
   .dark body { background-color: #121620; color: #f1f5f9; }
+
+  /* Hide all scrollbars globally */
+  *::-webkit-scrollbar { display: none; }
+  * { scrollbar-width: none; -ms-overflow-style: none; }
 </style>
 <script>
   if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {

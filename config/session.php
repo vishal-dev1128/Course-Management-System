@@ -45,10 +45,21 @@ function currentUser() {
 
 function redirectByRole($role) {
     switch ($role) {
-        case 'admin':      header('Location: /CMS/admin/dashboard.php'); break;
-        case 'instructor': header('Location: /CMS/instructor/dashboard.php'); break;
-        case 'student':    header('Location: /CMS/student/dashboard.php'); break;
-        default:           header('Location: /CMS/auth/login.php');
+        case 'admin':
+            header('Location: /CMS/admin/dashboard.php');
+            break;
+        case 'instructor':
+            header('Location: /CMS/instructor/dashboard.php');
+            break;
+        case 'student':
+            header('Location: /CMS/student/dashboard.php');
+            break;
+        default:
+            // Unknown role — destroy the session to prevent a redirect loop
+            session_unset();
+            session_destroy();
+            header('Location: /CMS/auth/login.php?error=invalid_role');
+            break;
     }
     exit;
 }

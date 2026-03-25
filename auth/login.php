@@ -3,7 +3,14 @@ require_once '../config/db.php';
 require_once '../config/session.php';
 
 if (isLoggedIn()) {
-    redirectByRole($_SESSION['user_role']);
+    $validRoles = ['admin', 'instructor', 'student'];
+    if (in_array($_SESSION['user_role'] ?? '', $validRoles)) {
+        redirectByRole($_SESSION['user_role']);
+    } else {
+        // Stale or corrupted session with an unknown role — clear it
+        session_unset();
+        session_destroy();
+    }
 }
 
 $error = '';

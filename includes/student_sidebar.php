@@ -26,6 +26,10 @@ $currentPage = basename($_SERVER['PHP_SELF']);
   
   /* Prevent flash of unstyled content for dark mode */
   .dark body { background-color: #121620; color: #f1f5f9; }
+
+  /* Hide all scrollbars globally */
+  *::-webkit-scrollbar { display: none; }
+  * { scrollbar-width: none; -ms-overflow-style: none; }
 </style>
 <script>
   if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -64,20 +68,27 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
   <!-- Navigation Scroll Area -->
   <nav class="flex-1 px-4 py-6 overflow-y-auto space-y-2 custom-scrollbar">
-    <div class="px-4 mb-3">
-      <p class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Learning Center</p>
-    </div>
 
-    <?php
+  <?php
     $navItems = [
-      ['href'=>'/CMS/student/dashboard.php',  'icon'=>'grid_view',     'label'=>'My Dashboard'],
-      ['href'=>'/CMS/student/my_courses.php', 'icon'=>'auto_stories',  'label'=>'Enrolled Courses'],
-      ['href'=>'/CMS/student/catalog.php',    'icon'=>'search',        'label'=>'Browse Catalog'],
+      ['href'=>'/CMS/student/dashboard.php',  'icon'=>'grid_view',     'label'=>'My Dashboard',     'section'=>'Learning Center'],
+      ['href'=>'/CMS/student/my_courses.php', 'icon'=>'auto_stories',  'label'=>'Enrolled Courses',  'section'=>''],
+      ['href'=>'/CMS/student/catalog.php',    'icon'=>'search',        'label'=>'Browse Catalog',    'section'=>''],
+      ['href'=>'/CMS/student/profile.php',    'icon'=>'manage_accounts','label'=>'Settings',         'section'=>'Account'],
     ];
 
+    $lastSection = null;
     foreach ($navItems as $item):
+      if ($item['section'] && $item['section'] !== $lastSection):
+        $lastSection = $item['section'];
+  ?>
+    <div class="px-4 <?= $lastSection !== 'Learning Center' ? 'mt-4 pt-4 border-t border-slate-100 dark:border-slate-800' : '' ?> mb-3">
+      <p class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400"><?= $lastSection ?></p>
+    </div>
+  <?php
+      endif;
       $isActive = (basename($item['href']) === basename($_SERVER['PHP_SELF']));
-    ?>
+  ?>
     <a href="<?= $item['href'] ?>" 
        class="group flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300 <?= $isActive 
          ? 'bg-primary text-white shadow-lg shadow-primary/25 font-bold' 
@@ -90,7 +101,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         <div class="ml-auto size-1.5 rounded-full bg-white animate-pulse"></div>
       <?php endif; ?>
     </a>
-    <?php endforeach; ?>
+  <?php endforeach; ?>
   </nav>
 
   <!-- User Profile & Theme -->

@@ -33,6 +33,12 @@
 | :---: | :---: | :---: |
 | ![Courses](docs/screenshorts/admin%20manage%20courses.png) | ![Users](docs/screenshorts/admin%20manage%20users.png) | ![Enroll](docs/screenshorts/admin%20enrollment.png) |
 
+### 🎓 Student Learning Experience
+| Course Completion & Certification |
+| :---: |
+| ![Course Completion](docs/screenshots/Screenshot%202026-03-25%20081708.png) |
+*Students get a beautiful course completion screen with certificate access upon finishing all lessons.*
+
 ---
 
 ## 🚀 Key Features
@@ -41,7 +47,7 @@
 - 👤 **Triple-Role Ecosystem** — Dedicated, feature-rich portals for Administrators, Instructors, and Students.
 - 📚 **Course Lifecycle Management** — Complete CRUD operations with image processing and instant category filtering.
 - 📊 **Real-time Analytics** — Visual trend charts, enrollment metrics, and live activity feeds for administrators.
-- 🎓 **Student Experience** — One-click enrollment, personalized learning progress tracking, and verified results.
+- 🎓 **Student Experience** — One-click enrollment, personalized learning progress tracking, course completion certificates, and secure password management.
 - 👨‍🏫 **Instructor Control** — Specialized tools to manage assigned students, track engagement, and update materials.
 - 🌙 **Persistent Theming** — Seamless light/dark mode transition that remembers user preferences.
 - 📱 **Fluid Responsiveness** — Pixel-perfect experience across mobile, tablet, and high-resolution desktops.
