@@ -21,6 +21,17 @@
 
 ---
 
+<p align="center">
+  <h2>🛒 Get the Full Source Code</h2>
+  <a href="https://vishaldev1.gumroad.com/l/course-management-system">
+    <img src="https://img.shields.io/badge/Get_Full_Source_Code-ff90e8?style=for-the-badge&logo=gumroad&logoColor=black" alt="Buy Source Code" />
+  </a>
+  <br/>
+  <em>This repository is a visual showcase. To launch your own platform with the fully functional PHP backend and all databases, purchase the premium source code above.</em>
+</p>
+
+---
+
 ## 🌟 Visual Preview
 
 ### 🖥️ Modern Experience
