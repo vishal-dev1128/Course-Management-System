@@ -1,6 +1,10 @@
 # EduManage — Premium Course Management System
 
 <p align="center">
+  <img src="website-preview.png" alt="EduManage Preview" width="100%">
+</p>
+
+<p align="center">
   <img src="assets/images/logo.png" alt="EduManage Logo" width="120">
 </p>
 
@@ -65,71 +69,6 @@
 
 ---
 
-## ⚙️ Quick Start Installation
-
-### 📋 Prerequisites
-- **XAMPP** (or any LAMP/WAMP stack)
-- **PHP 8.0 or higher**
-
-### 🔨 Setup Steps
-
-1. **Clone the Project**:
-   ```bash
-   git clone https://github.com/vishal-dev1128/Course-Management-System-CMS-.git
-   cd Course-Management-System-CMS-
-   ```
-
-2. **Database Configuration**:
-   - Create a database named `cms_db`.
-   - Import the seeder file located at `config/cms_db.sql`.
-
-3. **Verify Connection**:
-   Check `config/db.php` to ensure credentials match your environment:
-   ```php
-   define('DB_HOST', 'localhost');
-   define('DB_NAME', 'cms_db');
-   define('DB_USER', 'root');
-   define('DB_PASS', '');
-   ```
-
-4. **Launch**:
-   Start Apache and MySQL via XAMPP and visit:
-   `http://localhost/CMS`
-
----
-
-## 🔑 Access Credentials (Default Data)
-
-| Role | Email | Password |
-| :--- | :--- | :--- |
-| **Administrator** | `admin@cms.com` | `admin_pass_2026` |
-| **Instructor 1** | `vikram@cms.com` | `instructor123` |
-| **Instructor 2** | `michael@cms.com` | `instructor123` |
-| **Instructor 3** | `anita@cms.com` | `instructor123` |
-| **Student** | `alice@cms.com` | `student123` |
-
----
-
-## 🔒 Security Architecture
-
-- **Security Policy**: Detailed vulnerability reporting guidelines are available in [SECURITY.md](SECURITY.md).
-- **Hardened Headers**: Implemented `X-Frame-Options`, `X-Content-Type-Options`, and `Referrer-Policy` to prevent clickjacking and MIME-sniffing.
-- **Credential Hashing**: Uses PHP `password_hash()` for state-of-the-art security.
-- **SQL Injection Prevention**: Forced PDO prepared statements across all database interactions.
-- **XSS Protection**: All user-generated content is sanitized via `htmlspecialchars()` and custom logic.
-- **Access Control**: Strict `requireRole()` checks on every protected route.
-- **File Security**: Strict extension whitelist and size validation for course assets.
-
----
-
-## 📄 Documentation
-
-For full product requirements and technical specifications, refer to:
-- [PRD.md](PRD.md) — Product Requirements Document
-- [Project Wiki](docs/wiki/Home.md) — Full System Documentation
-
----
-
 ## 📄 License
 
 **Copyright © 2026 Vishal Pawar. All Rights Reserved.**
@@ -137,15 +76,6 @@ For full product requirements and technical specifications, refer to:
 This project is intended for personal review and portfolio evaluation. For any other use, modification, or redistribution, explicit permission must be obtained from the author. 
 
 See [LICENSE](LICENSE) for full details.
-
----
-
-## 🤝 Community & Contribution
-
-We welcome contributions to **EduManage**! To maintain a healthy and productive community, please refer to our community guidelines:
-
-- **[Contributing Guidelines](CONTRIBUTING.md)** — How to get started with contributions.
-- **[Code of Conduct](CODE_OF_CONDUCT.md)** — Our standards for a welcoming environment.
 
 ---
 
